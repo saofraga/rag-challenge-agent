@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+.DS_Store
+node_modules/
+.vercel/
+
+# Local planning/working docs — not part of the public deliverable
+CLAUDE.md
+.scratch/
+docs/agents/
