@@ -1,18 +1,21 @@
 # Gera o índice vetorial dos documentos da BimBam Buy a partir dos PDFs em
 # docs/fontes/bimbam-buy/. Rodar com: python -m indexing.build_index
-# (dentro do ambiente virtual, com Ollama rodando localmente e o modelo
-# nomic-embed-text já baixado). Reexecutar este script a qualquer momento
-# regenera o índice do zero — inclusive após atualizar algum PDF-fonte.
+# (dentro do ambiente virtual, com GEMINI_API_KEY configurada em .env).
+# Reexecutar este script a qualquer momento regenera o índice do zero —
+# inclusive após atualizar algum PDF-fonte.
 
 import json
 from pathlib import Path
 
 import faiss
 import numpy as np
+from dotenv import load_dotenv
 
-from rag.chunking import chunk_text
-from rag.embeddings import embed_batch
-from rag.pdf_text import extract_text
+load_dotenv()
+
+from rag.chunking import chunk_text  # noqa: E402
+from rag.embeddings import embed_batch  # noqa: E402
+from rag.pdf_text import extract_text  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SOURCE_DIR = REPO_ROOT / "docs" / "fontes" / "bimbam-buy"
@@ -45,7 +48,7 @@ def build_index() -> None:
         print(f"{pdf_path.name}: {len(doc_chunks)} trechos")
 
     print(f"Total de trechos: {len(chunks)}")
-    print("Gerando embeddings via Ollama local...")
+    print("Gerando embeddings via Gemini...")
     vectors = np.array(embed_batch([c["text"] for c in chunks]), dtype="float32")
     faiss.normalize_L2(vectors)
 
