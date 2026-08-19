@@ -6,6 +6,8 @@ venv/
 .DS_Store
 node_modules/
 .vercel/
+test-results/
+playwright-report/
 
 # Local planning/working docs — not part of the public deliverable
 CLAUDE.md

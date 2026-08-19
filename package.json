@@ -1,0 +1,28 @@
+{
+  "name": "challenge-rag-agent",
+  "version": "1.0.0",
+  "description": "Agente conversacional que responde, em português, perguntas sobre os documentos internos da BimBam Buy (loja online fictícia): métodos de pagamento, política de reembolso e devoluções, prazos e custos de envio, garantia de produtos e o programa de afiliados.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saofraga/rag-challenge-agent.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/saofraga/rag-challenge-agent/issues"
+  },
+  "homepage": "https://github.com/saofraga/rag-challenge-agent#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.62.1"
+  }
+}
