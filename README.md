@@ -112,6 +112,10 @@ Capturados na aplicação publicada em produção:
 >
 > **Resposta:** O Programa de Afiliados da BimBam Buy permite que criadores de conteúdo, sites de cupons, mídias digitais, comunidades de compras, educadores ou outros parceiros promovam produtos da marca e recebam uma comissão por vendas validamente atribuídas.
 
+> **Pergunta:** Qual a duração da garantia oferecida para os produtos?
+>
+> **Resposta:** A duração da garantia não é fixa para todos os produtos. Ela pode variar conforme o tipo de produto, a categoria e o país onde a compra foi feita. O prazo específico de garantia está indicado na ficha do produto ou na confirmação de compra que você recebeu. Caso haja alguma diferença entre documentos, prevalece a informação que consta no detalhe do produto e a regulamentação local aplicável.
+
 > **Pergunta:** Qual é a capital da Mongólia?
 >
 > **Resposta:** Não encontrei essa informação nos documentos disponíveis da BimBam Buy.
