@@ -1,0 +1,63 @@
+Evidência de funcionamento em produção — Ticket 4
+====================================================
+
+URL pública: https://rag-challenge-agent.vercel.app
+
+Testes reais rodados contra a URL de produção (mesmas perguntas do Ticket 2,
+incluindo as duas formulações de envio que exigiram o ajuste de arquitetura
+de embeddings — ver commit 5f92353).
+
+$ curl -s -i -X POST https://rag-challenge-agent.vercel.app/perguntar \
+    -H "Content-Type: application/json" \
+    -d '{"pergunta": "Quantos dias tenho para devolver um produto?"}'
+
+HTTP/2 200
+{"resposta":"Você tem duas regras de prazo, dependendo do motivo da
+devolução: Para arrependimento (quando decide que não quer mais o
+produto), a solicitação deve ser feita dentro de 10 dias corridos a
+partir do recebimento do pedido. Se o produto chegou errado, com falta
+ou com dano visível, a solicitação deve ser feita em até 48 horas após
+a entrega."}
+
+Demais casos testados na mesma sessão, todos HTTP 200 com resposta correta:
+
+- "Quais formas de pagamento a BimBam Buy aceita?"
+  -> "A BimBam Buy aceita as seguintes formas de pagamento: Cartão de
+  crédito, Cartão de débito, Transferência bancária ou PIX, ..."
+
+- "Quais são os prazos de entrega dos pedidos?"
+  -> "Os prazos de entrega variam conforme a região de destino: Áreas
+  urbanas principais: de 2 a 5 dias úteis; Áreas secundárias: de 4 a 8
+  dias úteis; ..."
+
+- "Quanto tempo demora para meu pedido chegar?" (formulação que falhava
+  antes da migração de embeddings para o Gemini)
+  -> "O tempo estimado de entrega depende da sua localização: em áreas
+  urbanas principais o pedido costuma chegar em 2 a 5 dias úteis; ..."
+
+- "Meu pedido está atrasado, o que fazer?" (segunda formulação difícil)
+  -> "Primeiro verifique o status do seu pedido usando o número do
+  pedido, o e-mail cadastrado ou o link de rastreamento que foi
+  enviado. ..."
+
+- "Como funciona o programa de afiliados da BimBam Buy?"
+  -> "O Programa de Afiliados da BimBam Buy permite que criadores de
+  conteúdo, sites de cupons, mídias digitais, comunidades de compras,
+  educadores ou outros parceiros promovam produtos ..."
+
+- "O que acontece quando eu abro um chamado de garantia por um produto
+  com defeito?"
+  -> "Quando você abre um chamado de garantia por um defeito, a
+  BimBam Buy registra o pedido recebido por um canal oficial e
+  confirma o recebimento, ..."
+
+- "Qual é a capital da Mongólia?" (fora de escopo)
+  -> "Não encontrei essa informação nos documentos disponíveis da
+  BimBam Buy."
+
+Confirmação visual (interface de chat, navegador real, mesma sessão):
+perguntei "Quanto tempo demora para meu pedido chegar?" seguida de
+"Qual a capital da Mongólia?" diretamente na URL pública. O histórico
+das duas trocas permaneceu visível na tela, com as respostas
+corretas — a segunda pergunta mostrando a mensagem de "não encontrado",
+não uma resposta inventada.

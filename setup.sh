@@ -28,22 +28,6 @@ pip install -r requirements.txt
 echo "Dependências instaladas dentro de .venv."
 
 echo ""
-echo "== Verificando Ollama (LLM local + embeddings) =="
-if ! command -v ollama &> /dev/null; then
-  echo "Ollama não encontrado no PATH. Baixe em https://ollama.com/download antes de continuar."
-  echo "Depois de instalar, rode: ollama pull nomic-embed-text"
-else
-  echo "Ollama encontrado: $(ollama --version 2>&1 | head -1)"
-  echo "Verificando modelo de embeddings local (nomic-embed-text)..."
-  if ollama list 2>/dev/null | grep -q "nomic-embed-text"; then
-    echo "Modelo nomic-embed-text já disponível localmente."
-  else
-    echo "Baixando nomic-embed-text (necessário para gerar os embeddings dos documentos)..."
-    ollama pull nomic-embed-text
-  fi
-fi
-
-echo ""
 echo "== Verificando Node.js e Vercel CLI (para deploy) =="
 if ! command -v node &> /dev/null; then
   echo "Node.js não encontrado. Instale em https://nodejs.org/ antes de fazer deploy no Vercel."
@@ -68,5 +52,5 @@ fi
 
 echo ""
 echo "== Setup concluído =="
-echo "Próximos passos: leia CLAUDE.md, depois docs/spec-challenge-rag-agent.md e .scratch/challenge-rag-agent/tickets.md."
+echo "Próximos passos: leia o README.md para instruções de execução local."
 echo "Ative o ambiente virtual em novas sessões de terminal com: source .venv/bin/activate"
