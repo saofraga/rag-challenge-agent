@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 load_dotenv()
@@ -25,3 +26,6 @@ def perguntar(payload: Pergunta) -> Resposta:
     chunks = search(payload.pergunta, k=RETRIEVAL_K)
     resposta = generate_answer(payload.pergunta, chunks)
     return Resposta(resposta=resposta)
+
+
+app.mount("/", StaticFiles(directory="static", html=True), name="static")

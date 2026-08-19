@@ -22,7 +22,11 @@ Se, depois de avaliar todos os trechos, nenhum deles contiver informação \
 suficiente para responder à pergunta, responda exatamente com esta frase, sem \
 adicionar mais nada: "{NOT_FOUND_MESSAGE}"
 
-Não invente informações que não estejam nos trechos fornecidos."""
+Não invente informações que não estejam nos trechos fornecidos.
+
+Responda em texto simples, em português, sem markdown (sem **negrito**, sem \
+listas com marcadores) e sem marcadores de citação entre colchetes — escreva \
+como se estivesse falando diretamente com a pessoa cliente."""
 
 
 def _build_context(chunks: list[dict]) -> str:

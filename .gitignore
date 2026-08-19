@@ -9,7 +9,6 @@ node_modules/
 
 # Local planning/working docs — not part of the public deliverable
 CLAUDE.md
-SUPERVISOR.md
 .scratch/
 docs/agents/
-docs/supervisor-logs/
+.claude/
