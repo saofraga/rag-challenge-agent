@@ -1,0 +1,68 @@
+import os
+
+import requests
+
+OLLAMA_CLOUD_URL = "https://ollama.com/api/chat"
+CHAT_MODEL = os.environ.get("OLLAMA_CHAT_MODEL", "gpt-oss:120b")
+
+NOT_FOUND_MESSAGE = "Não encontrei essa informação nos documentos disponíveis da BimBam Buy."
+
+SYSTEM_PROMPT = f"""Você é um assistente de atendimento da BimBam Buy, uma loja online.
+
+Responda à pergunta da pessoa cliente usando apenas as informações contidas nos \
+trechos de documentos internos abaixo. Cada trecho indica de qual documento \
+interno foi extraído.
+
+Os trechos foram recuperados por busca de similaridade e nem todos são \
+necessariamente relevantes para a pergunta — avalie cada um e baseie a resposta \
+apenas nos trechos que de fato tratam do assunto perguntado, mesmo que não sejam \
+os de maior similaridade.
+
+Se, depois de avaliar todos os trechos, nenhum deles contiver informação \
+suficiente para responder à pergunta, responda exatamente com esta frase, sem \
+adicionar mais nada: "{NOT_FOUND_MESSAGE}"
+
+Não invente informações que não estejam nos trechos fornecidos."""
+
+
+def _build_context(chunks: list[dict]) -> str:
+    partes = []
+    for i, chunk in enumerate(chunks, start=1):
+        partes.append(f"[{i}] (fonte: {chunk['source']})\n{chunk['text']}")
+    return "\n\n".join(partes)
+
+
+def generate_answer(question: str, chunks: list[dict]) -> str:
+    api_key = os.environ.get("OLLAMA_API_KEY")
+    if not api_key:
+        raise RuntimeError(
+            "OLLAMA_API_KEY não configurada. Crie uma chave em "
+            "https://ollama.com/settings/keys e defina a variável de ambiente."
+        )
+
+    user_message = f"Trechos recuperados:\n\n{_build_context(chunks)}\n\nPergunta: {question}"
+
+    try:
+        response = requests.post(
+            OLLAMA_CLOUD_URL,
+            headers={"Authorization": f"Bearer {api_key}"},
+            json={
+                "model": CHAT_MODEL,
+                "messages": [
+                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {"role": "user", "content": user_message},
+                ],
+                "stream": False,
+            },
+            timeout=60,
+        )
+        response.raise_for_status()
+    except requests.exceptions.ConnectionError as exc:
+        raise RuntimeError("Não foi possível conectar à Ollama Cloud.") from exc
+    except requests.exceptions.HTTPError as exc:
+        raise RuntimeError(
+            f"Ollama Cloud recusou o pedido (modelo '{CHAT_MODEL}'). "
+            "Confirme que OLLAMA_API_KEY é válida e que o modelo existe."
+        ) from exc
+
+    return response.json()["message"]["content"].strip()
