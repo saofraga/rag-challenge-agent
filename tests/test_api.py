@@ -67,3 +67,18 @@ def test_garantia():
 def test_pergunta_fora_de_escopo():
     resposta = perguntar("Qual é a capital da Mongólia?")
     assert NOT_FOUND_NORMALIZADO in resposta
+
+
+def test_saudacao():
+    resposta = perguntar("Oi")
+    assert NOT_FOUND_NORMALIZADO not in resposta
+    resposta_lower = resposta.lower()
+    for categoria in ["pagamento", "envio", "reembolso", "garantia", "afiliad"]:
+        assert categoria in resposta_lower
+
+
+def test_sugestao_de_perguntas():
+    resposta = perguntar("Sugira perguntas que posso fazer")
+    assert NOT_FOUND_NORMALIZADO not in resposta
+    quantidade_exemplos = resposta.count("?")
+    assert 1 <= quantidade_exemplos <= 5

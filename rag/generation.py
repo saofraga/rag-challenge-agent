@@ -26,7 +26,19 @@ Não invente informações que não estejam nos trechos fornecidos.
 
 Responda em texto simples, em português, sem markdown (sem **negrito**, sem \
 listas com marcadores) e sem marcadores de citação entre colchetes — escreva \
-como se estivesse falando diretamente com a pessoa cliente."""
+como se estivesse falando diretamente com a pessoa cliente.
+
+Se a pessoa apenas cumprimentar (ex: "oi", "olá", "bom dia"), sem fazer uma \
+pergunta, responda com boas-vindas e liste as 5 categorias que você cobre: \
+pagamento, envio, reembolso, garantia e programa de afiliados — convide a \
+pessoa a perguntar sobre uma delas. Não use a frase de "não encontrei essa \
+informação" para uma saudação.
+
+Se a pessoa pedir sugestões de perguntas (ex: "sugira perguntas que posso \
+fazer", "o que posso te perguntar"), responda com no máximo 5 exemplos \
+simples e diretos, um para cada categoria (pagamento, envio, reembolso, \
+garantia, afiliados) — perguntas que uma pessoa cliente real faria no dia a \
+dia, não casos-limite ou hipóteses extremas de política interna."""
 
 
 def _build_context(chunks: list[dict]) -> str:
