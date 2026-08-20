@@ -90,7 +90,7 @@ source .venv/bin/activate
 python -m pytest tests/ -v
 ```
 
-Os testes chamam a rota real (`POST /perguntar`) — não simulam a busca ou a geração — cobrindo uma pergunta por documento-fonte e uma pergunta fora de escopo. Requerem as duas chaves de API configuradas e o índice já gerado.
+Os testes chamam a rota real (`POST /perguntar`) — não simulam a busca ou a geração. São 10 no total: uma pergunta por documento-fonte (com duas formulações alternativas para envio), uma pergunta fora de escopo, e mais dois testes de conversação — `test_saudacao` (uma saudação simples, como "Oi", deve receber boas-vindas e a lista das categorias cobertas, em vez da mensagem de "não encontrei essa informação") e `test_sugestao_de_perguntas` (um pedido de sugestão de perguntas deve receber exemplos simples e diretos, não uma resposta fora de escopo). Requerem as duas chaves de API configuradas e o índice já gerado.
 
 ## Exemplos reais de uso
 
