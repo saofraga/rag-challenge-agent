@@ -127,6 +127,11 @@
     opacity: 0.6;
     cursor: default;
   }
+
+  button:focus-visible {
+    outline: 2px solid var(--cor-usuario);
+    outline-offset: 2px;
+  }
 </style>
 </head>
 <body>
@@ -135,9 +140,9 @@
       <h1>BimBam Buy — Atendimento</h1>
       <p>Pergunte sobre pagamento, envio, reembolso, garantia ou o programa de afiliados.</p>
     </header>
-    <div id="historico"></div>
+    <div id="historico" role="log" aria-live="polite"></div>
     <form id="formulario">
-      <input type="text" id="entrada" placeholder="Digite sua pergunta..." autocomplete="off" required />
+      <input type="text" id="entrada" placeholder="Digite sua pergunta..." aria-label="Digite sua pergunta" autocomplete="off" required />
       <button type="submit" id="botao">Enviar</button>
     </form>
   </div>
