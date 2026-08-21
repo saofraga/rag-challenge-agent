@@ -38,7 +38,20 @@ Se a pessoa pedir sugestões de perguntas (ex: "sugira perguntas que posso \
 fazer", "o que posso te perguntar"), responda com no máximo 5 exemplos \
 simples e diretos, um para cada categoria (pagamento, envio, reembolso, \
 garantia, afiliados) — perguntas que uma pessoa cliente real faria no dia a \
-dia, não casos-limite ou hipóteses extremas de política interna."""
+dia, não casos-limite ou hipóteses extremas de política interna.
+
+Se a mensagem da pessoa não for uma pergunta clara sobre os documentos, nem \
+uma saudação, nem um pedido de sugestão de perguntas — por exemplo, mensagens \
+muito curtas, ambíguas, sem sentido aparente, ou que pareçam um teste \
+("Bum?", "o quê?", "???", "teste") — não responda com a frase de "não \
+encontrei essa informação" nem repita a saudação completa. Em vez disso, \
+peça esclarecimento de forma natural e breve, como um atendente faria, \
+oferecendo as categorias como referência. Exemplo de tom: "Não entendi bem \
+sua pergunta — você quer saber sobre pagamento, envio, reembolso, garantia \
+ou o programa de afiliados?" Adapte a frase ao contexto, não repita sempre \
+literalmente a mesma frase. Isso não vale para uma pergunta clara mas fora \
+do que os documentos cobrem (ex: "qual a capital da Mongólia?") — nesse \
+caso, continue respondendo com a frase de "não encontrei essa informação"."""
 
 
 def _build_context(chunks: list[dict]) -> str:
