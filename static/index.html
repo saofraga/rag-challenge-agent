@@ -9,10 +9,12 @@
     --cor-fundo: #f4f5f7;
     --cor-texto: #1c1e21;
     --cor-usuario: #2563eb;
+    --cor-usuario-2: #7c3aed;
     --cor-usuario-texto: #ffffff;
     --cor-assistente: #ffffff;
     --cor-assistente-texto: #1c1e21;
     --cor-borda: #d8dae0;
+    --sombra-bolha: 0 1px 2px rgba(28, 30, 33, 0.06), 0 2px 8px rgba(28, 30, 33, 0.05);
   }
 
   * { box-sizing: border-box; }
@@ -20,7 +22,7 @@
   body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: var(--cor-fundo);
+    background: linear-gradient(160deg, #f4f5f7 0%, #eef1fd 55%, #f4f5f7 100%);
     color: var(--cor-texto);
     display: flex;
     justify-content: center;
@@ -36,9 +38,36 @@
   }
 
   header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     padding: 16px 20px;
     border-bottom: 1px solid var(--cor-borda);
     background: #fff;
+  }
+
+  .avatar {
+    position: relative;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    background: linear-gradient(135deg, var(--cor-usuario), var(--cor-usuario-2));
+  }
+
+  .avatar .status-online {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #22c55e;
+    border: 2px solid #fff;
   }
 
   header h1 {
@@ -58,7 +87,7 @@
     padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
   }
 
   .mensagem {
@@ -68,11 +97,24 @@
     line-height: 1.4;
     font-size: 14px;
     white-space: pre-wrap;
+    box-shadow: var(--sombra-bolha);
+    animation: mensagemEntrada 220ms ease-out;
+  }
+
+  @keyframes mensagemEntrada {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .mensagem.usuario {
     align-self: flex-end;
-    background: var(--cor-usuario);
+    background: linear-gradient(135deg, var(--cor-usuario), var(--cor-usuario-2));
     color: var(--cor-usuario-texto);
     border-bottom-right-radius: 4px;
   }
@@ -83,6 +125,15 @@
     color: var(--cor-assistente-texto);
     border: 1px solid var(--cor-borda);
     border-bottom-left-radius: 4px;
+  }
+
+  .mensagem.assistente.carregando {
+    animation: mensagemEntrada 220ms ease-out, pulsoDigitando 1.3s ease-in-out infinite;
+  }
+
+  @keyframes pulsoDigitando {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
   }
 
   .mensagem.erro {
@@ -107,6 +158,7 @@
     border-radius: 20px;
     font-size: 14px;
     outline: none;
+    transition: border-color 150ms ease;
   }
 
   input[type="text"]:focus {
@@ -114,13 +166,32 @@
   }
 
   button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     padding: 10px 20px;
     border: none;
     border-radius: 20px;
-    background: var(--cor-usuario);
+    background: linear-gradient(135deg, var(--cor-usuario), var(--cor-usuario-2));
     color: #fff;
     font-size: 14px;
     cursor: pointer;
+    transition: transform 120ms ease, box-shadow 120ms ease;
+  }
+
+  button:hover:not(:disabled) {
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+    transform: translateY(-1px);
+  }
+
+  button:active:not(:disabled) {
+    transform: translateY(0) scale(0.97);
+  }
+
+  button svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
   }
 
   button:disabled {
@@ -132,18 +203,36 @@
     outline: 2px solid var(--cor-usuario);
     outline-offset: 2px;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mensagem,
+    .mensagem.assistente.carregando,
+    button {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
 </style>
 </head>
 <body>
   <div class="app">
     <header>
-      <h1>BimBam Buy — Atendimento</h1>
-      <p>Pergunte sobre pagamento, envio, reembolso, garantia ou o programa de afiliados.</p>
+      <div class="avatar" aria-hidden="true">
+        🛍️
+        <span class="status-online"></span>
+      </div>
+      <div>
+        <h1>BimBam Buy — Atendimento</h1>
+        <p>Pergunte sobre pagamento, envio, reembolso, garantia ou o programa de afiliados.</p>
+      </div>
     </header>
     <div id="historico" role="log" aria-live="polite"></div>
     <form id="formulario">
       <input type="text" id="entrada" placeholder="Digite sua pergunta..." aria-label="Digite sua pergunta" autocomplete="off" required />
-      <button type="submit" id="botao">Enviar</button>
+      <button type="submit" id="botao">
+        Enviar
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+      </button>
     </form>
   </div>
 
@@ -172,6 +261,7 @@
       entrada.disabled = true;
       botao.disabled = true;
       const mensagemEspera = adicionarMensagem("Digitando...", "assistente");
+      mensagemEspera.classList.add("carregando");
 
       try {
         const resposta = await fetch("/perguntar", {
@@ -185,6 +275,7 @@
         }
 
         const dados = await resposta.json();
+        mensagemEspera.classList.remove("carregando");
         mensagemEspera.textContent = dados.resposta;
       } catch (erro) {
         mensagemEspera.remove();
